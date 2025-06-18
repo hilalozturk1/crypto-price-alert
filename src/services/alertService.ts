@@ -1,6 +1,6 @@
 import { Alert, AlertDocument } from "../models/alert";
 import { IAlert } from "../types";
-import { ConflictError } from "../utils/errorHandlers";
+import { ConflictError, CustomError } from "../utils/errorHandlers";
 
 export const createAlert = async (
   alertData: Partial<IAlert>,
@@ -30,4 +30,12 @@ export const createAlert = async (
 
 export const getAlertsByUserId = async (userId: string): Promise<AlertDocument[]> => {
     return Alert.find({ userId }).sort({ createdAt: -1 });
+};
+
+export const updateAlert = async (alertId: string, updateData: Partial<IAlert>): Promise<AlertDocument | null> => {
+    const alert = await Alert.findByIdAndUpdate(alertId, updateData, { new: true });
+    if (!alert) {
+        throw new CustomError('Alert not found.', 404);
+    }
+    return alert;
 };

@@ -37,3 +37,16 @@ export const getAlerts = async (req: Request, res: Response, next: NextFunction)
     next(error);
   }
 };
+
+// UPDATE Alert
+export const updateAlert = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { alertId } = req.params;
+    const updateData = req.body; 
+
+    const updatedAlert = await alertService.updateAlert(alertId, updateData);
+    res.status(200).json({ success: true, data: updatedAlert });
+  } catch (error) {
+    next(error);
+  }
+};

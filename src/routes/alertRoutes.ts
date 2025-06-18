@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createAlert, getAlerts } from "../controllers/alertController";
+import { createAlert, getAlerts, updateAlert } from "../controllers/alertController";
 
 /**
  * @swagger
@@ -39,5 +39,6 @@ const router = Router();
 
 router.post("/", createAlert);
 router.get('/:userId', getAlerts);
+router.put('/:alertId', updateAlert);
 
 export default router;
