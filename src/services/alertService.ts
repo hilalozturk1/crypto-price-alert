@@ -27,3 +27,7 @@ export const createAlert = async (
   await alert.save();
   return alert;
 };
+
+export const getAlertsByUserId = async (userId: string): Promise<AlertDocument[]> => {
+    return Alert.find({ userId }).sort({ createdAt: -1 });
+};
