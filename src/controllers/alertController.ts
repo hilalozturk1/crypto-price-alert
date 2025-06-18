@@ -25,11 +25,15 @@ export const createAlert = async (
 };
 
 // GET Alerts by UserId
-export const getAlerts = async (req: Request, res: Response, next: NextFunction) => {
+export const getAlerts = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { userId } = req.params;
     if (!userId) {
-      throw new CustomError('User ID is required.', 400);
+      throw new CustomError("User ID is required.", 400);
     }
     const alerts = await alertService.getAlertsByUserId(userId);
     res.status(200).json({ success: true, data: alerts });
@@ -39,10 +43,14 @@ export const getAlerts = async (req: Request, res: Response, next: NextFunction)
 };
 
 // UPDATE Alert
-export const updateAlert = async (req: Request, res: Response, next: NextFunction) => {
+export const updateAlert = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { alertId } = req.params;
-    const updateData = req.body; 
+    const updateData = req.body;
 
     const updatedAlert = await alertService.updateAlert(alertId, updateData);
     res.status(200).json({ success: true, data: updatedAlert });
@@ -52,11 +60,21 @@ export const updateAlert = async (req: Request, res: Response, next: NextFunctio
 };
 
 // DELETE Alert
-export const deleteAlert = async (req: Request, res: Response, next: NextFunction) => {
+export const deleteAlert = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { alertId } = req.params;
     const deletedAlert = await alertService.deleteAlert(alertId);
-    res.status(200).json({ success: true, message: 'Alert deleted successfully', data: deletedAlert });
+    res
+      .status(200)
+      .json({
+        success: true,
+        message: "Alert deleted successfully",
+        data: deletedAlert,
+      });
   } catch (error) {
     next(error);
   }

@@ -28,22 +28,31 @@ export const createAlert = async (
   return alert;
 };
 
-export const getAlertsByUserId = async (userId: string): Promise<AlertDocument[]> => {
-    return Alert.find({ userId }).sort({ createdAt: -1 });
+export const getAlertsByUserId = async (
+  userId: string,
+): Promise<AlertDocument[]> => {
+  return Alert.find({ userId }).sort({ createdAt: -1 });
 };
 
-export const updateAlert = async (alertId: string, updateData: Partial<IAlert>): Promise<AlertDocument | null> => {
-    const alert = await Alert.findByIdAndUpdate(alertId, updateData, { new: true });
-    if (!alert) {
-        throw new CustomError('Alert not found.', 404);
-    }
-    return alert;
+export const updateAlert = async (
+  alertId: string,
+  updateData: Partial<IAlert>,
+): Promise<AlertDocument | null> => {
+  const alert = await Alert.findByIdAndUpdate(alertId, updateData, {
+    new: true,
+  });
+  if (!alert) {
+    throw new CustomError("Alert not found.", 404);
+  }
+  return alert;
 };
 
-export const deleteAlert = async (alertId: string): Promise<AlertDocument | null> => {
-    const alert = await Alert.findByIdAndDelete(alertId);
-    if (!alert) {
-        throw new CustomError('Alert not found.', 404);
-    }
-    return alert;
+export const deleteAlert = async (
+  alertId: string,
+): Promise<AlertDocument | null> => {
+  const alert = await Alert.findByIdAndDelete(alertId);
+  if (!alert) {
+    throw new CustomError("Alert not found.", 404);
+  }
+  return alert;
 };
