@@ -68,13 +68,11 @@ export const deleteAlert = async (
   try {
     const { alertId } = req.params;
     const deletedAlert = await alertService.deleteAlert(alertId);
-    res
-      .status(200)
-      .json({
-        success: true,
-        message: "Alert deleted successfully",
-        data: deletedAlert,
-      });
+    res.status(200).json({
+      success: true,
+      message: "Alert deleted successfully",
+      data: deletedAlert,
+    });
   } catch (error) {
     next(error);
   }
