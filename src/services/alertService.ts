@@ -39,3 +39,11 @@ export const updateAlert = async (alertId: string, updateData: Partial<IAlert>):
     }
     return alert;
 };
+
+export const deleteAlert = async (alertId: string): Promise<AlertDocument | null> => {
+    const alert = await Alert.findByIdAndDelete(alertId);
+    if (!alert) {
+        throw new CustomError('Alert not found.', 404);
+    }
+    return alert;
+};

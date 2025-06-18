@@ -50,3 +50,14 @@ export const updateAlert = async (req: Request, res: Response, next: NextFunctio
     next(error);
   }
 };
+
+// DELETE Alert
+export const deleteAlert = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { alertId } = req.params;
+    const deletedAlert = await alertService.deleteAlert(alertId);
+    res.status(200).json({ success: true, message: 'Alert deleted successfully', data: deletedAlert });
+  } catch (error) {
+    next(error);
+  }
+};
