@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import Redis from 'ioredis';
+import Redis from "ioredis";
 
-import { config } from './index';
+import { config } from "./index";
 
 export const connectMongoDB = async () => {
   try {
@@ -17,10 +17,10 @@ export const connectMongoDB = async () => {
 
 export const redisClient = new Redis(config.redisUrl);
 
-redisClient.on('connect', () => {
-  console.log('Redis connected successfully');
+redisClient.on("connect", () => {
+  console.log("Redis connected successfully");
 });
 
-redisClient.on('error', (err) => {
-  console.error('Redis connection error:', err);
+redisClient.on("error", (err) => {
+  console.error("Redis connection error:", err);
 });
