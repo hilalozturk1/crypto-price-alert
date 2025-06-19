@@ -1,6 +1,7 @@
 import { Alert, AlertDocument } from "../models/alert";
-import { IAlert } from "../types";
+import { IAlert, AlertType } from "../types";
 import { ConflictError, CustomError } from "../utils/errorHandlers";
+import { getCurrentPrice } from "./cyptoService";
 
 export const createAlert = async (
   alertData: Partial<IAlert>,
@@ -55,4 +56,39 @@ export const deleteAlert = async (
     throw new CustomError("Alert not found.", 404);
   }
   return alert;
+};
+
+export const checkAndTriggerAlerts = async (): Promise<void> => {
+  const activeAlerts = await Alert.find({ isActive: true, triggered: false });
+
+  for (const alert of activeAlerts) {
+    const currentPrice = await getCurrentPrice(alert.symbol);
+
+    if (currentPrice === null) {
+      continue;
+    }
+
+    let shouldTrigger = false;
+    if (
+      alert.alertType === AlertType.ABOVE &&
+      currentPrice > alert.targetPrice
+    ) {
+      shouldTrigger = true;
+    } else if (
+      alert.alertType === AlertType.BELOW &&
+      currentPrice < alert.targetPrice
+    ) {
+      shouldTrigger = true;
+    }
+
+    if (shouldTrigger) {
+      alert.triggered = true;
+      alert.triggeredAt = new Date();
+      alert.isActive = false;
+      await alert.save();
+
+      const message = JSON.stringify({ alert: alert.toJSON(), currentPrice });
+      console.log(`Alert triggered: ${message}`);
+    }
+  }
 };
