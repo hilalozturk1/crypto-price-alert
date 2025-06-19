@@ -3,7 +3,8 @@ import { IAlert, AlertType } from "../types";
 import { ConflictError, CustomError } from "../utils/errorHandlers";
 import { getCurrentPrice } from "./cyptoService";
 import { notificationService } from "./notificationService";
-
+import { redisClient } from "../config/db";
+import { REDIS_CHANNELS } from "../config/redisChannels";
 
 export const createAlert = async (
   alertData: Partial<IAlert>,
@@ -90,10 +91,9 @@ export const checkAndTriggerAlerts = async (): Promise<void> => {
       await alert.save();
 
       const message = JSON.stringify({ alert: alert.toJSON(), currentPrice });
+      await redisClient.publish(REDIS_CHANNELS.ALERT_TRIGGERED, message);
+
       console.log(`Alert triggered: ${message}`);
-
-      await notificationService.sendNotification(alert, currentPrice);
-
     }
   }
 };
