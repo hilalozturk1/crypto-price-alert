@@ -14,3 +14,9 @@ export interface IAlert {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface CryptoPrice {
+  [key: string]: {
+    usd: number;
+  };
+}
