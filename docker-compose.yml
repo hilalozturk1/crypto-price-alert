@@ -35,6 +35,7 @@ services:
       COINGECKO_API_URL: ${COINGECKO_API_URL}
       CRYPTO_SYMBOLS: ${CRYPTO_SYMBOLS}
       ALERT_CHECK_INTERVAL_MINUTES: ${ALERT_CHECK_INTERVAL_MINUTES}
+      NODE_ENV: production
     depends_on:
       - mongodb
       - redis
@@ -52,6 +53,7 @@ services:
       COINGECKO_API_URL: ${COINGECKO_API_URL}
       CRYPTO_SYMBOLS: ${CRYPTO_SYMBOLS}
       ALERT_CHECK_INTERVAL_MINUTES: ${ALERT_CHECK_INTERVAL_MINUTES}
+      NODE_ENV: production
     depends_on:
       - mongodb
       - redis

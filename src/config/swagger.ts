@@ -10,8 +10,14 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: "http://localhost:3000/api",
-        description: "Local Development Server",
+        url:
+          process.env.NODE_ENV === "production"
+            ? "http://13.51.43.185:3000/api"
+            : "http://localhost:3000/api",
+        description:
+          process.env.NODE_ENV === "production"
+            ? "Production Server"
+            : "Local Development Server",
       },
     ],
     components: {
