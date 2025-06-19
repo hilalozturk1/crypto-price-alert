@@ -5,9 +5,7 @@ import { config } from "./index";
 
 export const connectMongoDB = async () => {
   try {
-    const dbUri =
-      process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/cryptoalerts";
-    await mongoose.connect(dbUri, {});
+    await mongoose.connect(config.mongoUri);
     console.log("MongoDB connected successfully");
   } catch (error) {
     console.error("MongoDB connection error:", error);
