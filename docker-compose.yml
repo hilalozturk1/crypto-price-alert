@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  mongodb: # MongoDB service
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - app-network
+
+  redis: # Redis service
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - app-network
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: crypto-alert-api
+    ports:
+      - "3000:3000"
+    environment:
+      MONGO_URI: mongodb://mongodb:27017/cryptoalerts
+      REDIS_URL: redis://redis:6379
+      PORT: 3000
+      COINGECKO_API_URL: ${COINGECKO_API_URL}
+      CRYPTO_SYMBOLS: ${CRYPTO_SYMBOLS}
+      ALERT_CHECK_INTERVAL_MINUTES: ${ALERT_CHECK_INTERVAL_MINUTES}
+    depends_on:
+      - mongodb
+      - redis
+    networks:
+      - app-network
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: crypto-alert-worker
+    environment:
+      MONGO_URI: mongodb://mongodb:27017/cryptoalerts
+      REDIS_URL: redis://redis:6379
+      COINGECKO_API_URL: ${COINGECKO_API_URL}
+      CRYPTO_SYMBOLS: ${CRYPTO_SYMBOLS}
+      ALERT_CHECK_INTERVAL_MINUTES: ${ALERT_CHECK_INTERVAL_MINUTES}
+    depends_on:
+      - mongodb
+      - redis
+    networks:
+      - app-network
+    command: ["npm", "run", "start:worker"]
+
+
+volumes:
+  mongo-data:
+  redis-data:
+
+networks:
+  app-network:
+    driver: bridge
