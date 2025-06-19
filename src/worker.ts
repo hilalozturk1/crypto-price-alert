@@ -3,12 +3,14 @@ import { connectMongoDB } from "./config/db";
 import { config } from "./config";
 import { fetchCryptoPrices } from "./services/cyptoService";
 import { checkAndTriggerAlerts } from "./services/alertService";
-
+import { notificationService } from "./services/notificationService";
 
 connectMongoDB()
   .then(() => {
+    notificationService.init();
+
     fetchCryptoPrices();
-    
+
     cron.schedule(`*/${config.alertCheckIntervalMinutes} * * * *`, async () => {
       await fetchCryptoPrices();
       await checkAndTriggerAlerts();
