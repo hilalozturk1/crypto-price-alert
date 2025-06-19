@@ -2,6 +2,8 @@ import { Alert, AlertDocument } from "../models/alert";
 import { IAlert, AlertType } from "../types";
 import { ConflictError, CustomError } from "../utils/errorHandlers";
 import { getCurrentPrice } from "./cyptoService";
+import { notificationService } from "./notificationService";
+
 
 export const createAlert = async (
   alertData: Partial<IAlert>,
@@ -89,6 +91,9 @@ export const checkAndTriggerAlerts = async (): Promise<void> => {
 
       const message = JSON.stringify({ alert: alert.toJSON(), currentPrice });
       console.log(`Alert triggered: ${message}`);
+
+      await notificationService.sendNotification(alert, currentPrice);
+
     }
   }
 };
