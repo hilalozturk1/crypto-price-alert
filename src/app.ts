@@ -4,6 +4,8 @@ import alertRoutes from "./routes/alertRoutes";
 import swaggerUi from "swagger-ui-express";
 import { swaggerSpec } from "./config/swagger";
 import { errorHandler } from "./utils/errorHandlers";
+import { config } from "./config";
+import { logger } from "./utils/logger";
 
 const app = express();
 const router = Router();
@@ -23,6 +25,6 @@ app.use(errorHandler);
 
 connectMongoDB().then(() => {
   app.listen(3000, () => {
-    console.log(`localhost:3000/api`);
+    logger.info(`Server running on port ${config.port}`);
   });
 });

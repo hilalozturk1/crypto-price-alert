@@ -3,6 +3,7 @@ import { config } from "../config";
 import { CryptoPrice } from "../types";
 
 import { redisClient } from "../config/db";
+import { logger } from "../utils/logger";
 
 const CRYPTO_PRICES_KEY = "crypto_prices";
 
@@ -11,7 +12,7 @@ export const fetchCryptoPrices = async (): Promise<CryptoPrice | null> => {
     const symbolsParam = config.cryptoSymbols.join(",");
     const url = `${config.coingeckoApiUrl}?ids=${symbolsParam}&vs_currencies=usd`;
 
-    console.log(`Fetching crypto prices from: ${url}`);
+    logger.info(`Fetching prices from: ${url}`);
     const response = await axios.get<CryptoPrice>(url);
     const prices = response.data;
 
@@ -22,12 +23,14 @@ export const fetchCryptoPrices = async (): Promise<CryptoPrice | null> => {
         "EX",
         60,
       );
-      console.log("Crypto prices fetched successfully:", prices);
+
+      logger.info("Crypto prices fetched and cached successfully.", prices);
+
       return prices;
     }
     return null;
-  } catch (error) {
-    console.error("Error fetching crypto prices:", error);
+  } catch (error: any) {
+    logger.error("Error fetching crypto prices: " + (error.message || error));
     return null;
   }
 };
@@ -36,10 +39,13 @@ export const getCachedCryptoPrices = async (): Promise<CryptoPrice | null> => {
   try {
     const cachedPrices = await redisClient.get(CRYPTO_PRICES_KEY);
     if (cachedPrices) {
+      logger.info("Crypto prices retrieved from cache.");
       return JSON.parse(cachedPrices);
     }
+    logger.info("No cached prices found, fetching new.");
     return await fetchCryptoPrices();
   } catch (error) {
+    logger.error("Error getting cached crypto prices:", error);
     return null;
   }
 };

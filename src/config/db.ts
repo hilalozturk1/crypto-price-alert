@@ -1,14 +1,15 @@
 import mongoose from "mongoose";
 import Redis from "ioredis";
 
+import { logger } from "../utils/logger";
 import { config } from "./index";
 
 export const connectMongoDB = async () => {
   try {
     await mongoose.connect(config.mongoUri);
-    console.log("MongoDB connected successfully");
+    logger.info("MongoDB connected successfully!");
   } catch (error) {
-    console.error("MongoDB connection error:", error);
+    logger.error("MongoDB connection error:", error);
     process.exit(1);
   }
 };
@@ -16,9 +17,9 @@ export const connectMongoDB = async () => {
 export const redisClient = new Redis(config.redisUrl);
 
 redisClient.on("connect", () => {
-  console.log("Redis connected successfully");
+  logger.info("Redis connected successfully!");
 });
 
 redisClient.on("error", (err) => {
-  console.error("Redis connection error:", err);
+  logger.error("Redis connection error:", err);
 });

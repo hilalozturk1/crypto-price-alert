@@ -1,5 +1,6 @@
 import { AlertDocument } from "../models/alert";
 
+import { logger } from "../utils/logger";
 import { redisClient } from "../config/db";
 import { REDIS_CHANNELS } from "../config/redisChannels";
 
@@ -16,22 +17,21 @@ class NotificationService {
       if (channel === REDIS_CHANNELS.ALERT_TRIGGERED) {
         try {
           const { alert, currentPrice } = JSON.parse(message);
+
+          logger.info("Received alert trigger message:", alert);
           this.sendNotification(alert, currentPrice);
         } catch (error) {
-          console.error("Error processing message:", error);
+          logger.error("Error parsing alert message from Redis:", error);
         }
       }
     });
 
     this.subscriber.subscribe(REDIS_CHANNELS.ALERT_TRIGGERED, (err, count) => {
       if (err) {
-        console.error(
-          `Failed to subscribe to channel: ${REDIS_CHANNELS.ALERT_TRIGGERED}`,
-          err,
-        );
+        logger.error("Failed to subscribe to Redis channel:", err);
       } else {
-        console.log(
-          `Subscribed to channel: ${REDIS_CHANNELS.ALERT_TRIGGERED}. Total subscriptions: ${count}`,
+        logger.info(
+          `Subscribed to ${count} Redis channel: ${REDIS_CHANNELS.ALERT_TRIGGERED}`,
         );
       }
     });
@@ -50,10 +50,12 @@ class NotificationService {
       Alert ID: ${alert._id}
     `;
 
-    console.log(`*********Notification sent: ${message}`);
+    logger.info(
+      `--- NOTIFICATION SENT ---\n${message}\n------------------------`,
+    );
   }
   public init() {
-    console.log("Notification service initialized and listening for alerts.");
+    logger.info("Notification Service initialized and listening for alerts.");
   }
 }
 
