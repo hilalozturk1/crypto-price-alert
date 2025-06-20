@@ -73,3 +73,5 @@ redisClient.on("connect", () => {
 redisClient.on("error", () => {
   redisConnectionStatus.set(0);
 });
+
+export default app;
