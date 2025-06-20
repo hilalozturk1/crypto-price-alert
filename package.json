@@ -2,7 +2,6 @@
   "name": "crypto-price-alert-service",
   "version": "1.0.0",
   "description": "A cryptocurrency price alert service",
-  "type": "module",
   "main": "dist/app.js",
   "scripts": {
     "start": "node dist/app.js",
@@ -51,6 +50,7 @@
     "prettier": "^3.2.5",
     "supertest": "^7.1.1",
     "ts-jest": "^29.4.0",
+    "ts-node": "^10.9.2",
     "typescript": "^5.4.5"
   }
 }
