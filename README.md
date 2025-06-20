@@ -3,6 +3,7 @@
 A scalable, event-driven backend service for setting up cryptocurrency price alerts.  
 Built with Node.js (TypeScript), MongoDB, Redis, and Docker.  
 Includes asynchronous processing, robust security, and modern DevOps practices.
+Deployed on AWS EC2.
 
 ---
 
@@ -75,7 +76,7 @@ Includes asynchronous processing, robust security, and modern DevOps practices.
 
 ---
 
-## 🐘 Kafka Integration (How-To)
+## Kafka Integration (How-To)
 
 To scale event processing, you can replace Redis Pub/Sub with **Apache Kafka**:
 
@@ -180,7 +181,7 @@ docker compose up --build test
 
 ## API Documentation
 
-Swagger UI: [http://localhost:3000/api-docs](http://localhost:3000/api-docs)
+Swagger UI: [http://13.51.43.185:3000/api-docs](http://13.51.43.185:3000/api-docs)
 
 **Example:**
 - `POST /api/auth/register` — Register a new user
