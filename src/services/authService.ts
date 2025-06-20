@@ -54,6 +54,8 @@ export const loginUser = async (
   if (!isMatch) {
     throw new CustomError("Invalid credentials", 401);
   }
-  const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+  const token = jwt.sign({ id: user._id }, JWT_SECRET, {
+    expiresIn: JWT_EXPIRES_IN,
+  });
   return { token };
 };

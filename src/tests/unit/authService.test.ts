@@ -12,7 +12,7 @@ describe("authService", () => {
     it("should throw if email already exists", async () => {
       (User.findOne as jest.Mock).mockResolvedValue({ email: "test@test.com" });
       await expect(
-        registerUser("test", "test@test.com", "password123")
+        registerUser("test", "test@test.com", "password123"),
       ).rejects.toThrow("Email already in use");
     });
 
@@ -35,7 +35,7 @@ describe("authService", () => {
     it("should throw if user not found", async () => {
       (User.findOne as jest.Mock).mockResolvedValue(null);
       await expect(
-        loginUser("notfound@test.com", "password123")
+        loginUser("notfound@test.com", "password123"),
       ).rejects.toThrow("Invalid credentials");
     });
   });
