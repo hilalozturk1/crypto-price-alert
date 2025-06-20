@@ -7,6 +7,9 @@ import { errorHandler } from "./utils/errorHandlers";
 import { config } from "./config";
 import { logger } from "./utils/logger";
 import { apiLimiter } from "./config/rateLimit"; //
+import authRoutes from "./routes/authRoutes";
+import { protect } from "./middleware/authMiddleware";
+
 import {
   register,
   httpRequestsTotal,
@@ -45,6 +48,8 @@ app.get("/metrics", async (req, res) => {
 });
 
 app.use("/api", router);
+app.use("/api/auth", authRoutes);
+app.use(protect);
 app.use("/api/alerts", alertRoutes);
 
 app.use(errorHandler);
