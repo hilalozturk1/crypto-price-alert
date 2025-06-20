@@ -6,11 +6,14 @@ import { swaggerSpec } from "./config/swagger";
 import { errorHandler } from "./utils/errorHandlers";
 import { config } from "./config";
 import { logger } from "./utils/logger";
+import { apiLimiter } from "./config/rateLimit"; //
 
 const app = express();
 const router = Router();
 
 app.use(express.json());
+
+app.use(apiLimiter);
 
 router.get("/", (req, res) => {
   res.status(200).json({ status: "ok", message: "API is running" });

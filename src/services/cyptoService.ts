@@ -4,16 +4,23 @@ import { CryptoPrice } from "../types";
 
 import { redisClient } from "../config/db";
 import { logger } from "../utils/logger";
+import { cryptoApiLimiter } from "../config/rateLimit";
 
 const CRYPTO_PRICES_KEY = "crypto_prices";
 
 export const fetchCryptoPrices = async (): Promise<CryptoPrice | null> => {
   try {
+    if (!cryptoApiLimiter.canRequest()) {
+      logger.warn("Rate limit hit for external crypto API. Skipping fetch.");
+      return null;
+    }
+
     const symbolsParam = config.cryptoSymbols.join(",");
     const url = `${config.coingeckoApiUrl}?ids=${symbolsParam}&vs_currencies=usd`;
 
     logger.info(`Fetching prices from: ${url}`);
     const response = await axios.get<CryptoPrice>(url);
+    cryptoApiLimiter.addRequest(); // Increment request count
     const prices = response.data;
 
     if (prices) {
