@@ -181,7 +181,7 @@ docker compose up --build test
 
 ## API Documentation
 
-Swagger UI: [http://13.51.43.185:3000/api-docs](http://13.51.43.185:3000/api-docs)
+Swagger UI: [http://16.170.69.224:3000/api-docs](http://16.170.69.224:3000/api-docs)
 
 **Example:**
 - `POST /api/auth/register` — Register a new user

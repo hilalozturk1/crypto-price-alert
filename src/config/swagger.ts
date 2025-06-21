@@ -12,7 +12,7 @@ const swaggerOptions = {
       {
         url:
           process.env.NODE_ENV === "production"
-            ? "http://13.51.43.185:3000/api"
+            ? "http://16.170.69.224:3000/api"
             : "http://localhost:3000/api",
         description:
           process.env.NODE_ENV === "production"
