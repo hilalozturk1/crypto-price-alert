@@ -221,7 +221,7 @@ Swagger UI: [http://16.170.69.224:3000/api-docs](http://16.170.69.224:3000/api-d
 
 ## 🔒 Security & Best Practices
 
-- JWT ile authentication
+- JWT ile authentication - !!!! Don't forget to get the returned value after logging in.
 - Rate limiting
 - Input validation (Joi)
 - Password hashing (bcrypt)
