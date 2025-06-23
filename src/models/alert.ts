@@ -15,15 +15,19 @@ import { IAlert, AlertType } from "../types";
  *       properties:
  *         userId:
  *           type: string
+ *           example: "60c72b2f9b1e8d001c8e4f3a"
  *         symbol:
  *           type: string
+ *           example: "bitcoin"
  *         targetPrice:
  *           type: number
+ *           example: 50000
  *         alertType:
  *           type: string
  *           enum: [above, below]
  *         isActive:
  *           type: boolean
+ *           example: true
  *         triggered:
  *           type: boolean
  *         triggeredAt:
